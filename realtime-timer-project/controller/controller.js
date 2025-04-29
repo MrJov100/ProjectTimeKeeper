@@ -43,7 +43,10 @@ function sendTimer() {
 
 function sendMessage() {
   const msg = document.getElementById("message").value;
+  if (!msg) return;
+
   socket.emit("send-message", msg);
+  document.getElementById("message").value = ""; // kosongkan input
 }
 
 function clearMessage() {
