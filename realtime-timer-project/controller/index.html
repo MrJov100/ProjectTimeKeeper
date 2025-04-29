@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Controller</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="controller.js" defer></script>
+    <link rel="stylesheet" href="/public/style.css" />
+  </head>
+  <body>
+    <h2 id="clock"></h2>
+
+    <h3>Timer Settings</h3>
+    <input id="title" placeholder="Judul Timer" /><br />
+    <input id="speaker" placeholder="Nama Pembicara" /><br />
+    <input id="minutes" type="number" placeholder="Menit" />
+    <input id="seconds" type="number" placeholder="Detik" /><br />
+    <textarea id="speech" placeholder="Teks Pidato"></textarea><br />
+    <button onclick="sendTimer()">Kirim Timer</button>
+
+    <h3>Daftar Timer</h3>
+    <ul id="timerList"></ul>
+
+    <h3>Message</h3>
+    <input id="message" placeholder="Tulis pesan" /><br />
+    <button onclick="sendMessage()">Kirim Pesan</button>
+    <button onclick="clearMessage()">Hapus Pesan</button>
+
+    <button onclick="resetViewer()">Reset Viewer</button>
+  </body>
+</html>

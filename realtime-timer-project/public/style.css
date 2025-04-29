@@ -1,0 +1,9 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+#timer {
+  font-size: 48px;
+  color: red;
+  margin: 20px 0;
+}
