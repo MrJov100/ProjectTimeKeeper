@@ -31,6 +31,14 @@ io.on("connection", (socket) => {
   socket.on("reset-viewer", () => {
     io.emit("reset-viewer");
   });
+
+  socket.on("pause-timer", () => {
+    io.emit("pause-timer");
+  });
+
+  socket.on("resume-timer", () => {
+    io.emit("resume-timer");
+  });
 });
 
 server.listen(3000, () => {

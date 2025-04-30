@@ -1,6 +1,9 @@
 const socket = io();
-
 let timerList = [];
+let previewInterval;
+let currentTimerIndex = null;
+let isPaused = false;
+let remainingSeconds = 0;
 
 function updateClock() {
   const now = new Date();
@@ -31,7 +34,6 @@ function sendTimer() {
   timerList.push(timer);
   updateTimerList();
 
-  // Kosongkan input
   document.getElementById("title").value = "";
   document.getElementById("speaker").value = "";
   document.getElementById("minutes").value = "";
@@ -51,6 +53,7 @@ function updateTimerList() {
     ).padStart(2, "0")}:${String(timer.seconds).padStart(2, "0")})
       <br><em>${timer.speech}</em><br>
       <button onclick="startTimer(${index})">Mulai</button>
+      <button onclick="pauseResumeTimer(${index})" id="pauseBtn-${index}" disabled>Pause</button>
       <button onclick="deleteTimer(${index})">Hapus</button>
     `;
     listElement.appendChild(li);
@@ -61,28 +64,48 @@ function startTimer(index) {
   const timer = timerList[index];
   socket.emit("update-timer", timer);
 
-  // Tampilkan juga di preview dashboard
   document.getElementById("preview-title").textContent = timer.title;
   document.getElementById("preview-speaker").textContent = timer.speaker;
   document.getElementById("preview-speech").textContent = timer.speech;
 
-  let totalSeconds = timer.minutes * 60 + timer.seconds;
-  updatePreviewTimer(totalSeconds);
+  clearInterval(previewInterval);
+  currentTimerIndex = index;
+  isPaused = false;
+  remainingSeconds = timer.minutes * 60 + timer.seconds;
+
+  document.getElementById(`pauseBtn-${index}`).disabled = false;
+
+  updatePreviewTimer();
 }
 
-let previewInterval;
-function updatePreviewTimer(totalSeconds) {
+function updatePreviewTimer() {
   clearInterval(previewInterval);
   previewInterval = setInterval(() => {
-    if (totalSeconds <= 0) {
-      clearInterval(previewInterval);
-      return;
+    if (!isPaused && remainingSeconds > 0) {
+      const min = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
+      const sec = String(remainingSeconds % 60).padStart(2, "0");
+      document.getElementById("preview-timer").textContent = `${min}:${sec}`;
+      remainingSeconds--;
     }
-    const min = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-    const sec = String(totalSeconds % 60).padStart(2, "0");
-    document.getElementById("preview-timer").textContent = `${min}:${sec}`;
-    totalSeconds--;
+    if (remainingSeconds <= 0) {
+      clearInterval(previewInterval);
+    }
   }, 1000);
+}
+
+function pauseResumeTimer(index) {
+  if (index !== currentTimerIndex) return;
+
+  const btn = document.getElementById(`pauseBtn-${index}`);
+  if (!isPaused) {
+    isPaused = true;
+    btn.textContent = "Resume";
+    socket.emit("pause-timer");
+  } else {
+    isPaused = false;
+    btn.textContent = "Pause";
+    socket.emit("resume-timer");
+  }
 }
 
 function deleteTimer(index) {
@@ -93,17 +116,12 @@ function deleteTimer(index) {
 function sendMessage() {
   const msg = document.getElementById("message").value.trim();
   if (!msg) return;
-
   socket.emit("send-message", msg);
-
-  // Jangan ubah preview langsung di sini — biarkan viewer/dashboard menunggu emit
   document.getElementById("message").value = "";
 }
 
 function clearMessage() {
   socket.emit("clear-message");
-
-  // Jangan ubah preview langsung — biarkan lewat socket.on
 }
 
 function resetViewer() {
