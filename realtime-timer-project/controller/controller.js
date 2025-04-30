@@ -1,9 +1,27 @@
 const socket = io();
-let timerList = [];
+let timerList = JSON.parse(localStorage.getItem("timerList")) || [];
 let previewInterval;
-let currentTimerIndex = null;
-let isPaused = false;
-let remainingSeconds = 0;
+let currentTimerIndex = parseInt(localStorage.getItem("currentTimerIndex"));
+let isPaused = localStorage.getItem("isPaused") === "true";
+let remainingSeconds = parseInt(localStorage.getItem("remainingSeconds")) || 0;
+
+// Saat halaman dimuat ulang
+window.addEventListener("load", () => {
+  updateTimerList();
+
+  // Pulihkan preview jika ada
+  if (!isNaN(currentTimerIndex) && timerList[currentTimerIndex]) {
+    const timer = timerList[currentTimerIndex];
+    document.getElementById("preview-title").textContent = timer.title;
+    document.getElementById("preview-speaker").textContent = timer.speaker;
+    document.getElementById("preview-speech").textContent = timer.speech;
+    document.getElementById(`pauseBtn-${currentTimerIndex}`).disabled = false;
+    document.getElementById(`pauseBtn-${currentTimerIndex}`).textContent =
+      isPaused ? "Resume" : "Pause";
+
+    updatePreviewTimer();
+  }
+});
 
 function updateClock() {
   const now = new Date();
@@ -32,6 +50,7 @@ function sendTimer() {
 
   const timer = { title, speaker, minutes, seconds, speech };
   timerList.push(timer);
+  localStorage.setItem("timerList", JSON.stringify(timerList));
   updateTimerList();
 
   document.getElementById("title").value = "";
@@ -54,7 +73,7 @@ function updateTimerList() {
       <div class="scroll-box">${timer.speech}</div>
       <button onclick="startTimer(${index})">Mulai</button>
       <button onclick="pauseResumeTimer(${index})" id="pauseBtn-${index}" disabled>Pause</button>
-      <button onclick="deleteTimer(${index})">Hapus</button>
+      <button class="reset-button" onclick="deleteTimer(${index})">Hapus</button>
     `;
     listElement.appendChild(li);
   });
@@ -71,9 +90,16 @@ function startTimer(index) {
   clearInterval(previewInterval);
   currentTimerIndex = index;
   isPaused = false;
+
   remainingSeconds = timer.minutes * 60 + timer.seconds;
 
+  // Simpan state
+  localStorage.setItem("currentTimerIndex", index);
+  localStorage.setItem("isPaused", "false");
+  localStorage.setItem("remainingSeconds", remainingSeconds.toString());
+
   document.getElementById(`pauseBtn-${index}`).disabled = false;
+  document.getElementById(`pauseBtn-${index}`).textContent = "Pause";
 
   updatePreviewTimer();
 }
@@ -86,6 +112,7 @@ function updatePreviewTimer() {
       const sec = String(remainingSeconds % 60).padStart(2, "0");
       document.getElementById("preview-timer").textContent = `${min}:${sec}`;
       remainingSeconds--;
+      localStorage.setItem("remainingSeconds", remainingSeconds.toString());
     }
     if (remainingSeconds <= 0) {
       clearInterval(previewInterval);
@@ -100,16 +127,19 @@ function pauseResumeTimer(index) {
   if (!isPaused) {
     isPaused = true;
     btn.textContent = "Resume";
+    localStorage.setItem("isPaused", "true");
     socket.emit("pause-timer");
   } else {
     isPaused = false;
     btn.textContent = "Pause";
+    localStorage.setItem("isPaused", "false");
     socket.emit("resume-timer");
   }
 }
 
 function deleteTimer(index) {
   timerList.splice(index, 1);
+  localStorage.setItem("timerList", JSON.stringify(timerList));
   updateTimerList();
 }
 
@@ -133,6 +163,11 @@ function resetViewer() {
   document.getElementById("preview-message").textContent = "[Belum ada pesan]";
   document.getElementById("preview-message").classList.remove("active");
   clearInterval(previewInterval);
+
+  // Reset state
+  localStorage.removeItem("currentTimerIndex");
+  localStorage.removeItem("remainingSeconds");
+  localStorage.setItem("isPaused", "false");
 }
 
 socket.on("send-message", (msg) => {
