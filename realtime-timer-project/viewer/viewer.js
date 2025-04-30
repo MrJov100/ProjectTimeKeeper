@@ -30,7 +30,7 @@ function runTimer() {
     }
     if (totalSeconds <= 0) {
       clearInterval(countdownInterval);
-      document.getElementById("timer").textContent = "Selesai!";
+      document.getElementById("timer").textContent = "WAKTU HABIS!";
     }
   }, 1000);
 }
@@ -48,14 +48,14 @@ socket.on("send-message", (msg) => {
 });
 
 socket.on("clear-message", () => {
-  document.getElementById("message").textContent = "[Tidak ada pesan]";
+  document.getElementById("message").textContent = "";
 });
 
 socket.on("reset-viewer", () => {
   document.getElementById("title").textContent = "";
   document.getElementById("speaker").textContent = "";
   document.getElementById("speech").textContent = "";
-  document.getElementById("message").textContent = "[Tidak ada pesan]";
+  document.getElementById("message").textContent = "";
   document.getElementById("timer").textContent = "00:00";
   clearInterval(countdownInterval);
 });

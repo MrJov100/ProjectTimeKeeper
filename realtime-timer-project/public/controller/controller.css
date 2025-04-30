@@ -1,0 +1,126 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f7f9fc;
+  color: #333;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.section {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.section h2,
+.section h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+#clock {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#viewer-preview {
+  background-color: #f0f3f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+#preview-timer {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+textarea,
+input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  margin-top: 5px;
+  margin-right: 5px;
+  padding: 10px 20px; /* Menambahkan padding yang sama */
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%; /* Mengatur lebar tombol menjadi 100% */
+  box-sizing: border-box; /* Menjaga padding tetap menghitung dalam ukuran tombol */
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Menyesuaikan ukuran tombol untuk elemen khusus seperti reset dan hapus pesan */
+.reset-button {
+  background-color: #e74c3c;
+}
+
+.reset-button:hover {
+  background-color: #c0392b;
+}
+
+.reset-button:active {
+  background-color: #a93226;
+}
+
+ul#timerList {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul#timerList li {
+  background-color: #f8f9fb;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.message-box {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px dashed #aaa;
+  color: #333;
+}
+
+.message-box.active {
+  background-color: #ffe5e5;
+  border-color: #e74c3c;
+  color: #c0392b;
+}
+
+.scroll-box {
+  max-height: 80px;
+  overflow-y: auto;
+  background-color: #fafafa;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}

@@ -51,7 +51,7 @@ function updateTimerList() {
       <strong>${timer.title}</strong> - ${timer.speaker} (${String(
       timer.minutes
     ).padStart(2, "0")}:${String(timer.seconds).padStart(2, "0")})
-      <br><em>${timer.speech}</em><br>
+      <div class="scroll-box">${timer.speech}</div>
       <button onclick="startTimer(${index})">Mulai</button>
       <button onclick="pauseResumeTimer(${index})" id="pauseBtn-${index}" disabled>Pause</button>
       <button onclick="deleteTimer(${index})">Hapus</button>

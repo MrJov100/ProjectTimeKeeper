@@ -1,0 +1,126 @@
+/* GENERAL STYLES */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #2c3e50; /* Dark background */
+  color: #ecf0f1; /* Light text */
+  line-height: 1.6;
+}
+
+.viewer-container {
+  display: flex;
+  height: 100vh;
+  padding: 30px;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* PANEL KIRI (1/2): BAGIAN 1 & 2 */
+.left-panel {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* BAGIAN 1: Info Timer */
+.info-box {
+  background-color: #34495e; /* Slightly lighter shade */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+#clock {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+#title {
+  font-size: 2rem;
+  margin: 10px 0;
+  color: #f39c12; /* Gold color */
+}
+
+#timer {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #e74c3c; /* Red color */
+}
+
+#speaker {
+  font-size: 1.6rem;
+  margin-top: 10px;
+}
+
+/* BAGIAN 2: Message */
+.message-box {
+  background-color: #34495e; /* Dark background for message */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  min-height: 150px;
+}
+
+.message-box h3 {
+  font-size: 1.6rem;
+  color: #d35400; /* Orange color */
+  margin-bottom: 10px;
+}
+
+#message {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ecf0f1; /* Light text */
+}
+
+/* PANEL KANAN: BAGIAN 3 - Teks Pidato */
+.speech-box {
+  width: 50%;
+  background-color: #34495e;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  height: 90%; /* Ensure it fills the vertical space */
+}
+
+#speech {
+  font-size: 2.2rem;
+  line-height: 1.7;
+  color: #ecf0f1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* SCROLLBOX for speech in dashboard */
+.scroll-box {
+  max-height: 80px;
+  overflow-y: auto;
+  background-color: #7f8c8d;
+  padding: 8px;
+  border: 1px solid #95a5a6;
+  border-radius: 6px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* BUTTONS STYLES */
+button {
+  background-color: #e74c3c; /* Red color for buttons */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
