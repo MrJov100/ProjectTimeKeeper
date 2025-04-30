@@ -2,30 +2,6 @@ const socket = io();
 
 let timerList = [];
 
-let sessionCountdown;
-
-socket.on("current-session", (session) => {
-  document.getElementById("sessTitle").textContent = session.title || "-";
-  document.getElementById("sessSpeaker").textContent = session.speaker || "-";
-  document.getElementById("sessSpeech").textContent = session.speech || "-";
-  document.getElementById("sessMessage").textContent = session.message || "-";
-
-  clearInterval(sessionCountdown);
-  let remaining = session.remainingSeconds || 0;
-
-  sessionCountdown = setInterval(() => {
-    if (remaining <= 0) {
-      clearInterval(sessionCountdown);
-      document.getElementById("sessTime").textContent = "00:00";
-      return;
-    }
-    const min = String(Math.floor(remaining / 60)).padStart(2, "0");
-    const sec = String(remaining % 60).padStart(2, "0");
-    document.getElementById("sessTime").textContent = `${min}:${sec}`;
-    remaining--;
-  }, 1000);
-});
-
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString();
