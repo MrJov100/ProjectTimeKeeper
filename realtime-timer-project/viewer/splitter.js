@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const rightPanel = document.querySelector(".right-panel");
 
   let isDragging = false;
+  const minLeftPx = 300; // Batas minimum lebar panel kiri (timer)
 
   const isMobile = () => window.innerWidth <= 768;
 
@@ -19,21 +20,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (isMobile()) {
       const containerHeight = container.offsetHeight;
-      const topHeight = (e.clientY / containerHeight) * 100;
-      const bottomHeight = 100 - topHeight;
+      const minTopPx = 200; // Batas minimum tinggi panel atas (timer)
+      const topHeight = e.clientY;
+      const bottomHeight = containerHeight - topHeight;
 
-      if (topHeight > 10 && bottomHeight > 10) {
-        leftPanel.style.height = `${topHeight}%`;
-        rightPanel.style.height = `${bottomHeight}%`;
+      if (topHeight >= minTopPx && bottomHeight >= 0) {
+        const topPercent = (topHeight / containerHeight) * 100;
+        const bottomPercent = 100 - topPercent;
+        leftPanel.style.height = `${topPercent}%`;
+        rightPanel.style.height = `${bottomPercent}%`;
       }
     } else {
       const containerWidth = container.offsetWidth;
-      const leftWidth = (e.clientX / containerWidth) * 100;
-      const rightWidth = 100 - leftWidth;
+      const leftWidthPx = e.clientX;
+      const rightWidthPx = containerWidth - leftWidthPx;
 
-      if (leftWidth > 10 && rightWidth > 10) {
-        leftPanel.style.width = `${leftWidth}%`;
-        rightPanel.style.width = `${rightWidth}%`;
+      if (leftWidthPx >= minLeftPx && rightWidthPx >= 0) {
+        const leftPercent = (leftWidthPx / containerWidth) * 100;
+        const rightPercent = 100 - leftPercent;
+        leftPanel.style.width = `${leftPercent}%`;
+        rightPanel.style.width = `${rightPercent}%`;
+
+        // Nonaktifkan interaksi dengan rightPanel jika terlalu kecil
+        rightPanel.style.pointerEvents = rightPercent < 5 ? "none" : "auto";
       }
     }
   });
@@ -43,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.style.cursor = "default";
   });
 
-  // Reset ukuran saat resize layar (desktop ↔ mobile)
   window.addEventListener("resize", () => {
     if (isMobile()) {
       leftPanel.style.width = "100%";
