@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Viewer</title>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="viewer.js" defer></script>
+    <script src="/viewer/viewer.js" defer></script>
+    <script src="/viewer/splitter.js" defer></script>
     <link rel="stylesheet" href="/public/viewer/viewer.css" />
   </head>
   <body>
     <div class="viewer-container">
-      <!-- KIRI: BAGIAN 1 + BAGIAN 2 -->
+      <!-- Panel Kiri -->
       <div class="left-panel">
-        <!-- BAGIAN 1 -->
-        <div class="info-box">
-          <h2 id="clock"></h2>
-          <h1 id="title"></h1>
-          <div id="timer">00:00</div>
-          <h2 id="speaker"></h2>
-        </div>
-
-        <!-- BAGIAN 2 -->
+        <h1 id="title" class="session-title">[Nama Timer]</h1>
+        <div id="timer" class="main-timer">00:00</div>
+        <h2 id="speaker" class="speaker-name">[Nama Pembicara]</h2>
+        <h3 id="clock" class="clock-time"></h3>
         <div class="message-box">
-          <h3></h3>
           <p id="message"></p>
         </div>
       </div>
 
-      <!-- KANAN: BAGIAN 3 -->
-      <div class="speech-box">
-        <p id="speech">[Teks pidato akan muncul di sini]</p>
+      <!-- Splitter -->
+      <div id="splitter"><div class="grip"></div></div>
+
+      <!-- Panel Kanan -->
+      <div class="right-panel">
+        <div class="speech-box">
+          <p id="speech">[Teks pidato akan muncul di sini]</p>
+        </div>
       </div>
     </div>
   </body>

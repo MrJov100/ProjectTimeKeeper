@@ -7,27 +7,24 @@ let lastRemainingSeconds = parseInt(
   localStorage.getItem("remainingSeconds") || "0"
 );
 
-// Clock (waktu saat ini)
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString();
 }
 setInterval(updateClock, 1000);
 
-// Jalankan ulang timer saat halaman di-refresh
+// Lanjutkan timer jika data sebelumnya ada
 if (lastTimerData && lastRemainingSeconds > 0) {
   setTimerDisplay(lastTimerData);
   totalSeconds = lastRemainingSeconds;
   runTimer();
 }
 
-// Handle saat menerima timer baru dari controller
 socket.on("update-timer", (data) => {
   localStorage.setItem("lastTimerData", JSON.stringify(data));
   localStorage.setItem("isPaused", "false");
 
   setTimerDisplay(data);
-
   totalSeconds = parseInt(data.minutes) * 60 + parseInt(data.seconds);
   localStorage.setItem("remainingSeconds", totalSeconds.toString());
 
@@ -36,7 +33,6 @@ socket.on("update-timer", (data) => {
   runTimer();
 });
 
-// Fungsi menjalankan countdown timer
 function runTimer() {
   clearInterval(countdownInterval);
   countdownInterval = setInterval(() => {
@@ -50,20 +46,18 @@ function runTimer() {
 
     if (totalSeconds <= 0) {
       clearInterval(countdownInterval);
-      document.getElementById("timer").textContent = "WAKTU HABIS!";
+      document.getElementById("timer").textContent = "Selesai";
       localStorage.setItem("remainingSeconds", "0");
     }
   }, 1000);
 }
 
-// Tampilkan data ke elemen-elemen halaman
 function setTimerDisplay(data) {
   document.getElementById("title").textContent = data.title;
   document.getElementById("speaker").textContent = data.speaker;
   document.getElementById("speech").textContent = data.speech;
 }
 
-// Pause/resume dari socket
 socket.on("pause-timer", () => {
   isPaused = true;
   localStorage.setItem("isPaused", "true");
@@ -74,7 +68,6 @@ socket.on("resume-timer", () => {
   localStorage.setItem("isPaused", "false");
 });
 
-// Pesan Viewer
 socket.on("send-message", (msg) => {
   document.getElementById("message").textContent = msg;
 });
@@ -83,7 +76,6 @@ socket.on("clear-message", () => {
   document.getElementById("message").textContent = "";
 });
 
-// Reset Viewer
 socket.on("reset-viewer", () => {
   document.getElementById("title").textContent = "";
   document.getElementById("speaker").textContent = "";
@@ -93,7 +85,6 @@ socket.on("reset-viewer", () => {
   clearInterval(countdownInterval);
   totalSeconds = 0;
 
-  // Hapus dari localStorage
   localStorage.removeItem("lastTimerData");
   localStorage.removeItem("remainingSeconds");
   localStorage.setItem("isPaused", "false");

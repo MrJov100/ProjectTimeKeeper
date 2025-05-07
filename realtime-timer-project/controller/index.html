@@ -37,8 +37,20 @@
         <h3>List Timers</h3>
         <input id="title" placeholder="Judul Timer" />
         <input id="speaker" placeholder="Nama Pembicara" />
-        <input id="minutes" type="number" placeholder="Menit" />
-        <input id="seconds" type="number" placeholder="Detik" />
+        <input
+          id="minutes"
+          type="number"
+          placeholder="Menit"
+          min="0"
+          max="59"
+        />
+        <input
+          id="seconds"
+          type="number"
+          placeholder="Detik"
+          min="0"
+          max="59"
+        />
         <textarea id="speech" placeholder="Teks Pidato"></textarea>
         <button onclick="sendTimer()">Kirim Timer</button>
         <ul id="timerList"></ul>

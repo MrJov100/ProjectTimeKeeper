@@ -116,6 +116,8 @@ function updatePreviewTimer() {
     }
     if (remainingSeconds <= 0) {
       clearInterval(previewInterval);
+      socket.emit("Wakut Habis!");
+      document.getElementById("preview-timer").textContent = "Selesai";
     }
   }, 1000);
 }
@@ -138,6 +140,8 @@ function pauseResumeTimer(index) {
 }
 
 function deleteTimer(index) {
+  if (!confirm("Yakin ingin menghapus timer ini?")) return;
+  if (index === currentTimerIndex) resetViewer();
   timerList.splice(index, 1);
   localStorage.setItem("timerList", JSON.stringify(timerList));
   updateTimerList();
